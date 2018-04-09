@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Poliza">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartamentoId" Type="int" Nullable="false" />
+          <Property Name="ProvinciaId" Type="int" Nullable="false" />
+          <Property Name="DistritoId" Type="int" Nullable="false" />
+          <Property Name="FechaInicio" Type="date" Nullable="false" />
+          <Property Name="FechaFin" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ubigeo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentId" Type="int" />
+        </EntityType>
+        <Association Name="FK_Poliza_Departamento">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Poliza" Type="Self.Poliza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Poliza">
+              <PropertyRef Name="DepartamentoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Poliza_Distrito">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Poliza" Type="Self.Poliza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Poliza">
+              <PropertyRef Name="DistritoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Poliza_Provincia">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Poliza" Type="Self.Poliza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Poliza">
+              <PropertyRef Name="ProvinciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Poliza" EntityType="Self.Poliza" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ubigeo" EntityType="Self.Ubigeo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Poliza_Departamento" Association="Self.FK_Poliza_Departamento">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Poliza" EntitySet="Poliza" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Poliza_Distrito" Association="Self.FK_Poliza_Distrito">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Poliza" EntitySet="Poliza" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Poliza_Provincia" Association="Self.FK_Poliza_Provincia">
+            <End Role="Ubigeo" EntitySet="Ubigeo" />
+            <End Role="Poliza" EntitySet="Poliza" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Poliza">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartamentoId" Type="Int32" Nullable="false" />
+          <Property Name="ProvinciaId" Type="Int32" Nullable="false" />
+          <Property Name="DistritoId" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FechaFin" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Departamento" Relationship="Self.FK_Poliza_Departamento" FromRole="Poliza" ToRole="Ubigeo" />
+          <NavigationProperty Name="Distrito" Relationship="Self.FK_Poliza_Distrito" FromRole="Poliza" ToRole="Ubigeo" />
+          <NavigationProperty Name="Provincia" Relationship="Self.FK_Poliza_Provincia" FromRole="Poliza" ToRole="Ubigeo" />
+        </EntityType>
+        <EntityType Name="Ubigeo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <NavigationProperty Name="Departamento" Relationship="Self.FK_Poliza_Departamento" FromRole="Ubigeo" ToRole="Poliza" />
+          <NavigationProperty Name="Distrito" Relationship="Self.FK_Poliza_Distrito" FromRole="Ubigeo" ToRole="Poliza" />
+          <NavigationProperty Name="Provincia" Relationship="Self.FK_Poliza_Provincia" FromRole="Ubigeo" ToRole="Poliza" />
+        </EntityType>
+        <Association Name="FK_Poliza_Departamento">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Poliza" Type="Self.Poliza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Poliza">
+              <PropertyRef Name="DepartamentoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Poliza_Distrito">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Poliza" Type="Self.Poliza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Poliza">
+              <PropertyRef Name="DistritoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Poliza_Provincia">
+          <End Role="Ubigeo" Type="Self.Ubigeo" Multiplicity="1" />
+          <End Role="Poliza" Type="Self.Poliza" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ubigeo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Poliza">
+              <PropertyRef Name="ProvinciaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Polizas" EntityType="Self.Poliza" />
+          <EntitySet Name="Ubigeos" EntityType="Self.Ubigeo" />
+          <AssociationSet Name="FK_Poliza_Departamento" Association="Self.FK_Poliza_Departamento">
+            <End Role="Ubigeo" EntitySet="Ubigeos" />
+            <End Role="Poliza" EntitySet="Polizas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Poliza_Distrito" Association="Self.FK_Poliza_Distrito">
+            <End Role="Ubigeo" EntitySet="Ubigeos" />
+            <End Role="Poliza" EntitySet="Polizas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Poliza_Provincia" Association="Self.FK_Poliza_Provincia">
+            <End Role="Ubigeo" EntitySet="Ubigeos" />
+            <End Role="Poliza" EntitySet="Polizas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Polizas">
+            <EntityTypeMapping TypeName="Model.Poliza">
+              <MappingFragment StoreEntitySet="Poliza">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DepartamentoId" ColumnName="DepartamentoId" />
+                <ScalarProperty Name="ProvinciaId" ColumnName="ProvinciaId" />
+                <ScalarProperty Name="DistritoId" ColumnName="DistritoId" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ubigeos">
+            <EntityTypeMapping TypeName="Model.Ubigeo">
+              <MappingFragment StoreEntitySet="Ubigeo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
